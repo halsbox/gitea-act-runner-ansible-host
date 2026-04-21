@@ -1,3 +1,5 @@
 ansible==13.2.0
 netaddr
 jinja2
+ansible-pylibssh
+scp
