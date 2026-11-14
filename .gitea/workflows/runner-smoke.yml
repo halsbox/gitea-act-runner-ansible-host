@@ -1,0 +1,19 @@
+name: Runner smoke check
+
+on:
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ansible
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: Check runner Ansible environment
+        run: |
+          set -euo pipefail
+          gitea-runner --version
+          ansible --version
+          python -m pip show ansible-pylibssh
+          python -c 'import pylibsshext.session'
+          ansible localhost -i localhost, -c local -m ansible.builtin.ping
