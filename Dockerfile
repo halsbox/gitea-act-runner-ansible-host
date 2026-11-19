@@ -21,7 +21,7 @@ RUN apk add --no-cache \
         build-base=0.5-r4 \
         libffi-dev=3.5.2-r1 \
         libssh-dev=0.12.2-r0 \
-        openssl-dev=3.5.9-r0 \
+        openssl-dev=3.5.9-r1 \
         pkgconf=2.5.1-r0 \
         python3-dev=3.14.10-r1 && \
     virtualenv "${ANSIBLE_VENV}" && \

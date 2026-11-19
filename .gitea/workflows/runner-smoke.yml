@@ -4,16 +4,32 @@ on:
   workflow_dispatch:
 
 jobs:
-  smoke:
+  smoke-ansible:
     runs-on: ansible
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
-      - name: Check runner Ansible environment
+        uses: https://git.dela.bz/actions/checkout@v6
+      - name: Check runner Ansible and AWS SDK environment
         run: |
           set -euo pipefail
           gitea-runner --version
           ansible --version
           python -m pip show ansible-pylibssh
           python -c 'import pylibsshext.session'
+          python -m pip show boto3 botocore
+          python -c 'import boto3, botocore; print("boto3", boto3.__version__, "botocore", botocore.__version__)'
+          ansible localhost -i localhost, -c local -m ansible.builtin.ping
+
+  smoke-ansible-deployer:
+    runs-on: [ansible, deployer]
+    steps:
+      - name: Checkout repository
+        uses: https://git.dela.bz/actions/checkout@v6
+      - name: Check runner Ansible and AWS SDK environment
+        run: |
+          set -euo pipefail
+          gitea-runner --version
+          ansible --version
+          python -m pip show ansible-pylibssh boto3 botocore
+          python -c 'import pylibsshext.session, boto3, botocore; print("boto3", boto3.__version__, "botocore", botocore.__version__)'
           ansible localhost -i localhost, -c local -m ansible.builtin.ping
